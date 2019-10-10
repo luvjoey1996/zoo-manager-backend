@@ -63,11 +63,11 @@ def auth_kazoo(username, password):
     auth_client = KazooClient(hosts=ZOO_HOSTS)
     try:
         auth_client.start(timeout=5)
-        credential = make_digest_acl_credential(username, password)
-        auth_client.add_auth('digest', credential)
+        auth_client.add_auth('digest', '{username}:{password}'.format(username=username, password=password))
         yield auth_client
     finally:
         auth_client.stop()
+
 
 
 @app.route('/create', methods=["POST"])
